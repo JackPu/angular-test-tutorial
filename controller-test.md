@@ -116,6 +116,94 @@ angular.module('calculatorApp', []);
 
 ```
 
+关于第二个参数？第二个参数必须的，表明我们正在创造一个新的模块。如果需要我们的应用程序有其他的依赖，我们可以将它们`['ngResource'，'ngCookies']`传入进去。
+第二个参数的存在的表示这是一个请求返回的模块的实例。
+
+从概念上讲，它本意是类似下面的意思:
+``` js
+* angular.module.createInstance(name, requires);
+* angular.module.getInstance(name)
+```
+
+然而实际我们是这样写的:
+
+``` js 
+* angular.module('calculatorApp', []); // i.e. createInstance
+* angular.module('calculatorApp'); // i.e. getInstance
+```
+关于module的更多信息 https://docs.angularjs.org/api/ng/function/angular.module
+
+#### 2.给module添加controller
+
+接着我们给angular module的示例添加一个controller
+
+``` js
+angular.module('calculatorApp').controller('CalculatorController', function CalculatorController($scope) {
+  $scope.z = 0;
+  $scope.sum = function() {
+    $scope.z = $scope.x + $scope.y;
+  };
+});
+```
+控制器主要负责业务逻辑和视图绑定，`$scope`者是视图的控制器直线的信使。
+
+#### 3.连接视图中的元素
+在下面 HTML 中，我们需要计算input里面的值，而这些都包含在这个controller的div中。
+
+``` html
+<div ng-controller="CalculatorController">
+	<input ng-model="x" type="number">
+	<input ng-model="y" type="number">
+	<strong>{{z}}</strong>
+	<!-- the value for ngClick maps to the sum function within the controller body -->
+	<input type="button" ng-click="sum()" value="+">
+</div>
+```
+
+input 中的ng-model绑定的的值及时$scope上定义的比如`$scope.x`,我们还在button元素使用ng-click绑定了`$scope.sum`方法。
+
+### 添加测试
+
+接下来终于到了我们的主题，添加一些单元测试给controller,我们忽略代码中html部分，主要集中在controller的代码中。
+
+``` html
+angular.module('calculatorApp').controller('CalculatorController', function CalculatorController($scope) {
+  $scope.z = 0;
+  $scope.sum = function() {
+    $scope.z = $scope.x + $scope.y;
+  };
+});
+```
+
+为了测试 controller，我们还得提及下面几点？
++ 如何创建一个controller实例
++ 如何get/set一个对象的属性
++ 如何调用$scope里面的函数
+
+``` js
+describe('calculator', function () {
+		
+	beforeEach(angular.mock.module('calculatorApp'));
+
+	var $controller;
+
+	beforeEach(angular.mock.inject(function(_$controller_){
+	  $controller = _$controller_;
+	}));
+
+	describe('sum', function () {
+		it('1 + 1 should equal 2', function () {
+			var $scope = {};
+			var controller = $controller('CalculatorController', { $scope: $scope });
+			$scope.x = 1;
+			$scope.y = 2;
+			$scope.sum();
+			expect($scope.z).toBe(3);
+		});	
+	});
+
+});
+```
 
 
 
