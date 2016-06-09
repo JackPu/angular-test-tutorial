@@ -204,8 +204,60 @@ describe('calculator', function () {
 
 });
 ```
+开始前我们需要引入[ngMock](https://docs.angularjs.org/api/ngMock),我们在测试的代码加入`angular.mock`
+
+,ngMock模块提供了一种机制进行诸如以及虚拟的service进行单元测试。
+
+#### 如火获取controller的实例
+
+使用ngMock我们可以注册一个calculator app实例。
+``` js
+beforeEach(angular.mock.module('calculatorApp'));
+```
+一旦calculatorApp初始化后，我们可以使用`inject`函数，这样可以解决controller的引用问题。
+
+``` js 
+beforeEach(angular.mock.inject(function(_$controller_) {
+	$controller = _$controller_;
+}));
+```
+
+一旦app加载完了，我们使用了`inject`函数，$controller service可以获取 CalculatorController 的实例。
+
+``` js 
+var controller = $controller('CalculatorController', { $scope: $scope });
+```
+#### 如何get/set一个对象的属性
+
+在上篇代码中我们已经可以获取一个controller的实例，在括号的第二个参数实际是controller自己，我们的controller只有一个参数
+`$scope`对象
+``` js
+function CalculatorController($scope) { ... }
+```
+在我们的测试中¥scope代表的就是一个简单的JavaScript对象。
 
 
+```js
+var $scope = {};
+var controller = $controller('CalculatorController', { $scope: $scope });
+// set some properties on the scope object
+$scope.x = 1;
+$scope.y = 2;
+```
+我们设置x,y的值，模拟刚才的gif中的所展示的一样。我们同意也可以读取对象中的属性，就像下面这段测试的断言：
+``` js
+expect($scope.z).toBe(3);
+```
+#### 如何调用$scope里面的函数
 
+最后一件事情就是我们如何模拟用户的点击，就像我们在绝大多数JS中使用的一致，，其实就是简单的调用函数就行，
+``` js
+$scope.sum();
+```
+
+### 小结
+
+本篇文章简单的基本的介绍了如何对angular controller进行单元测试，但是这是建立在不停的刷新浏览器基础上，
+而这些流畅可以再好，也是我们后面的一篇文章 如何使用karam进行angular 测试 (翻译中...)的所要说的。
 
 
