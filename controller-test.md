@@ -207,6 +207,6 @@ $scope.sum();
 本篇文章简单的基本的介绍了如何对angular controller进行单元测试，但是这是建立在不停的刷新浏览器基础上，
 而这些流畅可以再好，也是我们后面的一篇文章 如何使用karam进行 angular 测试 (翻译中...)的所要说的。
 
-完整代码:
+完整代码:https://github.com/JackPu/angular-test-tutorial/blob/master/angular-test.html
 
 
