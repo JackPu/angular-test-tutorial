@@ -151,4 +151,4 @@ describe('calculator', function () {
 我们初步了解了使用`jasmine`来进行TBD测试，这样有利于我们接下来去理解 使用karama进行单元测试（翻译中...）
 
 
-
+代码:https://github.com/JackPu/angular-test-tutorial/blob/master/index.html

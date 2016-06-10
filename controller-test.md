@@ -5,61 +5,7 @@
 
 上面一篇文章简单介绍了如何[使用 Jasmine 进行JavaScript的单元测试](http://www.jackpu.com/yi-kai-shi-dui-angular-appjin-xing-dan-yuan-ce-shi-1/)
 
-我们用了一段简单的代码进行计算的测试。
-``` html
-<html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.css">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine-html.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/boot.min.js"></script>
-	</head>
-	<body>
-	</body>
-	<script type="text/javascript">
-
-		// Basic calculator logic
-		var calculator = {
-			sum: function (x, y) {
-				return x + y;
-			},
-			subtract: function (x, y) {
-				return x - y;
-			},
-			divide: function (x, y) {
-				return (y === 0) ? 0 : x / y;
-			}
-		}
-
-		// The tests
-		describe('calculator', function () {
-			
-			describe('sum', function () {
-				it('1 + 1 should equal 2', function () {
-					expect(calculator.sum(1, 1)).toBe(2);
-				});	
-			});
-
-			describe('subtract', function () {
-				it('3 - 2 should equal 1', function () {
-					expect(calculator.subtract(3, 2)).toBe(1);
-				});
-			});
-
-			describe('divide', function () {
-				it('10 / 5 should equal 2', function () {
-					expect(calculator.divide(10, 5)).toBe(2);
-				});
-
-				it('zero divisor should equal 0', function () {
-					expect(calculator.divide(10, 0)).toBe(0);
-				});
-			});
-		});
-
-	</script>
-</html>
-```
+我们用了一段简单的[代码](https://github.com/JackPu/angular-test-tutorial/blob/master/index.html)进行计算的测试。
 
 接下来我们将其延伸到我们对Angular Controller的测试中。如果你不太了解angular也没关系，下文也会提及关于Angular的一些知识。
 
