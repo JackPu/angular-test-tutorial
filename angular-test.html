@@ -1,34 +1,113 @@
 <html>
-	<head>
-		<script type="text/javascript" src="https://code.angularjs.org/1.4.0-rc.2/angular.min.js"></script>
-	</head>
-	<body>
-		<!-- This div element corresponds to the  CalculatorController we created via the JavaScript-->
-		<div ng-controller="CalculatorController">
-			<input ng-model="x" type="number">
-			<input ng-model="y" type="number">
-			<strong>{{z}}</strong>
-			<!-- the value for ngClick maps to the sum function within the controller body -->
-			<input type="button" ng-click="sum()" value="+">
-		</div>
-	</body>
-	<script type="text/javascript">
+<head>
+    <title>Angular controller test</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.js"></script>
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine-html.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/boot.min.js"></script>
+    <script type="text/javascript" src="https://code.angularjs.org/1.4.0-rc.2/angular.min.js"></script>
+    <script src="//code.angularjs.org/1.4.0-rc.2/angular-mocks.js"></script>
+</head>
 
-		// Creates a new module called 'calculatorApp'
-		angular.module('calculatorApp', []);
+<body>
+    <!-- This div element corresponds to the  CalculatorController we created via the JavaScript-->
+    <div ng-controller="CalculatorController">
+        <div>
+            <input ng-model="x" type="number">
+            <input ng-model="y" type="number">
+            <strong>{{z}}</strong>
+            <!-- the value for ngClick maps to the sum function within the controller body -->
+            <input type="button" ng-click="sum()" value="+">
+            <input type="button" ng-click="subtract()" value="-">
+            <input type="button" ng-click="subtract()" value="÷">
+        </div>
+        <div>
+            <strong>{{z}}</strong>
+            <!-- the value for ngClick maps to the sum function within the controller body -->
+            <input type="button" ng-click="sum()" value="+">
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    // Creates a new module called 'calculatorApp'
+    angular.module('calculatorApp', []);
 
-		// Registers a controller to our module 'calculatorApp'.
-		angular.module('calculatorApp').controller('CalculatorController', function CalculatorController($scope) {
-		  $scope.z = 0;
-		  $scope.sum = function() {
-		    $scope.z = $scope.x + $scope.y;
-		  };
-		});
-		
-		// load the app
-		angular.element(document).ready(function() {
-   			angular.bootstrap(document, ['calculatorApp']);
-		});
+    // Registers a controller to our module 'calculatorApp'.
+    angular.module('calculatorApp').controller('CalculatorController', function CalculatorController($scope) {
+        $scope.z = 0;
+        $scope.sum = function () {
+            $scope.z = $scope.x + $scope.y;
+        };
+        
+        $scope.subtract = function() {
+            $scope.z = $scope.x-$scope.y;
+        }
+        
+        $scope.divide=function (x, y) {
+            $scope.z = ($scope.y === 0) ? 0 : $scope.x / $scope.y;
+        }
 
-	</script>
+
+
+
+    });
+
+    
+
+    // load the app
+    angular.element(document).ready(function () {
+        angular.bootstrap(document, ['calculatorApp']);
+        
+        describe('calculator', function () {
+
+            beforeEach(angular.mock.module('calculatorApp'));
+
+            var $controller;
+
+            beforeEach(angular.mock.inject(function (_$controller_) {
+                $controller = _$controller_;
+            }));
+
+            describe('sum', function () {
+                it('1 + 1 should equal 2', function () {
+                    var $scope = {};
+                    var controller = $controller('CalculatorController', {
+                        $scope: $scope
+                    });
+                    $scope.x = 1;
+                    $scope.y = 1;
+                    $scope.sum();
+                    expect($scope.z).toBe(2);
+                });
+            });
+            describe('subtract', function () {
+                it('1 - 1 should equal 0', function () {
+                    var $scope = {};
+                    var controller = $controller('CalculatorController', {
+                        $scope: $scope
+                    });
+                    $scope.x = 1;
+                    $scope.y = 1;
+                    $scope.subtract();
+                    expect($scope.z).toBe(0);
+                });
+            });
+            describe('divide', function () {
+                it('1 / 1 should equal 1', function () {
+                    var $scope = {};
+                    var controller = $controller('CalculatorController', {
+                        $scope: $scope
+                    });
+                    $scope.x = 1;
+                    $scope.y = 1;
+                    $scope.divide();
+                    expect($scope.z).toBe(1);
+                });
+            });
+
+        });
+    });
+</script>
+
 </html>

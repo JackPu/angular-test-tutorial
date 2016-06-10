@@ -109,7 +109,8 @@
 简单说说里面涉及的一些基本概念:
 
 #### 创建一个 module
-什么是angular.module？它是用于创建，回收模块的地方，。我们创建一个名为calculatorApp新的模块，我们并将组件添加到这个模块里。
+什么是angular.module？它是用于创建，回收模块的地方
+。我们创建一个名为calculatorApp新的模块，我们并将组件添加到这个模块里。
 
 ``` js
 angular.module('calculatorApp', []);
@@ -208,7 +209,7 @@ describe('calculator', function () {
 
 ,ngMock模块提供了一种机制进行诸如以及虚拟的service进行单元测试。
 
-#### 如火获取controller的实例
+#### 如何获取controller的实例
 
 使用ngMock我们可以注册一个calculator app实例。
 ``` js
@@ -234,7 +235,7 @@ var controller = $controller('CalculatorController', { $scope: $scope });
 ``` js
 function CalculatorController($scope) { ... }
 ```
-在我们的测试中¥scope代表的就是一个简单的JavaScript对象。
+在我们的测试中$scope代表的就是一个简单的JavaScript对象。
 
 
 ```js
@@ -258,6 +259,8 @@ $scope.sum();
 ### 小结
 
 本篇文章简单的基本的介绍了如何对angular controller进行单元测试，但是这是建立在不停的刷新浏览器基础上，
-而这些流畅可以再好，也是我们后面的一篇文章 如何使用karam进行angular 测试 (翻译中...)的所要说的。
+而这些流畅可以再好，也是我们后面的一篇文章 如何使用karam进行 angular 测试 (翻译中...)的所要说的。
+
+完整代码:
 
 
