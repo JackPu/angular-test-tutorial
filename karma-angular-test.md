@@ -35,10 +35,26 @@ echo {} >> package.json bash
 ```  bash
 npm install karma --save-dev
 ```
+如果安装成功， package.json中将会有下面内容:
+``` js
+{
+  "devDependencies": {
+    "karma": "^0.12.31"
+  }
+}
+```
 
+接着我们最好安装下karma-cli,这样可以全局使用`karma`命令。
 
+``` bash
+npm install -g karma-cli
+```
 
+下一步我们需要安装一些karma的插件，这样可以Jasmine测试框架能够工作，并且设置Google Chrome 作为我们的测试浏览器。
 
+``` bash
+npm install karma-jasmine karma-chrome-launcher --save-dev
+```
 
 
 -----
