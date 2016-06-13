@@ -55,6 +55,208 @@ npm install -g karma-cli
 ``` bash
 npm install karma-jasmine karma-chrome-launcher --save-dev
 ```
+接下来，package.json会增加一些内容:
+``` js
+{
+  "devDependencies": {
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.12",
+    "karma-jasmine": "^0.3.5"
+  }
+}
+```
+
+### 写测试用例
+
+接下来我们可以开始进行测试了，我们在命令行工具里输入下面的命令:
+
+``` bash
+mkdir tests
+touch tests/calculator.controller.test.js
+```
+
+我们将下面的代码粘贴到calculator.controller.test.js中去
+
+``` js
+describe('calculator', function () {
+
+  beforeEach(module('calculatorApp'));
+
+  var $controller;
+
+  beforeEach(inject(function(_$controller_){
+    $controller = _$controller_;
+  }));
+
+  describe('sum', function () {
+		it('1 + 1 should equal 2', function () {
+			var $scope = {};
+			var controller = $controller('CalculatorController', { $scope: $scope });
+			$scope.x = 1;
+			$scope.y = 2;
+			$scope.sum();
+			expect($scope.z).toBe(3);
+		});	
+	});
+
+});
+
+```
+
+### 让测试跑起来
+
+在进行测试之前，我们创建一个配置文件用于进行karma的一些设置。关于配置的内容您可以阅读 [官方文档](http://www.bradoncode.com/blog/2015/05/19/karma-angularjs-testing/)。
+
+接下来我们开始创建这个配置文件我们需要输入下面的命
+
+``` bash
+karma init karma.conf.js
+```
+
+然后回答命令行的问题就行了
+
+Which testing framework do you want to use?(你所使用的测试框架？)
+
+接受一个默认的值，比如:jasmine
+
+Do you want to use Require.js ?(你希望使用 Require.js吗？)
+接受一个默认的值,比如:no
+
+Do you want to capture any browsers automatically ?(你想自动捕获浏览器吗？)
+
+接受一个默认的值 比如：chrome
+
+What is the location of your source and test files ?(你测试文件的地址)
+
+输入下面的地址：
+``` bash
+tests/*.test.js
+```
+当然你并不需要担心你跳过哪些询问，稍后我们都可以手动修改配置文件的。
+
+Should any of the files included by the previous patterns be excluded ?（是否有需要排除的符合前面格式的问文件）
+
+Do you want Karma to watch all the files and run the tests on change ?(是否动态监听文件变化)
+
+接受一个默认的值,比如:yes
+
+
+接下来我们可以在根目录看到配置文件karma.conf.js创建成功。
+
+我们输入下面的命令开始测试
+
+``` bash
+karma start karma.conf.js
+```
+测试后的输出就像下面这样：
+
+``` bash
+> @ test /Users/devuser/repos/CalculatorKarma
+> ./node_modules/karma/bin/karma start karma.conf.js
+
+INFO [karma]: Karma v0.12.31 server started at http://localhost:9876/
+INFO [launcher]: Starting browser Chrome
+INFO [Chrome 42.0.2311 (Mac OS X 10.10.3)]: Connected on socket 2absOkNfa1asasaX0fCJ with id 71338229
+Chrome 42.0.2311 (Mac OS X 10.10.3) calculator encountered a declaration exception FAILED
+	ReferenceError: module is not defined
+	    at Suite.<anonymous> (/Users/devuser/repos/CalculatorKarma/tests/calculator.controller.test.js:3:13)
+	    at /Users/devuser/repos/CalculatorKarma/tests/calculator.controller.test.js:1:1
+Chrome 42.0.2311 (Mac OS X 10.10.3): Executed 1 of 1 (1 FAILED) ERROR (0.01 secs / 0.005 secs)
+```
+按住ctrl/command+c就可以停止这个进程。
+
+*小提示: 我们可以在package.json中的scripts里加入测试的命令，方便实用 *
+
+``` bash
+{
+	"scripts": {
+    "test": "karma start karma.conf.js"
+  },
+  "devDependencies": {
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.12",
+    "karma-jasmine": "^0.3.5"
+  }
+}
+```
+
+加入折断代码后，我们可以输入`npm test`进行karma的测试了。如果我们要验证package.json是否
+修改正确
+
+
+### 通过测试并添加新功能
+
+接下来我们添加一些controller的逻辑进去.
+
+``` bash
+mkdir app
+touch app/calculator.controller.js
+```
+
+然后我们需要下载angular的类库文件和angular mock的文件
+
+``` bash
+mkdir lib
+curl -o lib/angular.min.js https://code.angularjs.org/1.4.0-rc.2/angular.min.js
+curl -o lib/angular-mocks.js https://code.angularjs.org/1.4.0-rc.2/angular-mocks.js
+```
+我们需要将新增的目录加入到配置中去，打开 `karma.conf.js `然后添加成下面内容:
+
+``` bash
+// list of files / patterns to load in the browser
+files: [
+  'lib/angular.min.js',
+  'lib/angular-mocks.js',
+  'app/*.js',
+  'tests/*.js'
+],
+```
+再次在命令行中输入命令:
+``` bash
+npm test
+```
+运行结果依旧是失败的，因为我们并没有添加我们的controller,接下来我们将下面的代码粘贴到` app/calculator.controller.js`
+
+``` js
+angular.module('calculatorApp', []).controller('CalculatorController', function CalculatorController($scope) {
+  $scope.sum = function() {
+    $scope.z = $scope.x + $scope.y;
+  };
+});
+```
+在命令行工具里面我们可以看到karma检测到了文件变化，重新进行测试，这个时候测试就会通过了。
+
+接下来我们添加一个新的测试用例，我们将它增加到`calculator.controller.test.js`中去，把它放到`describe`作用域内。
+
+``` js
+it('z should have default value of zero', function () {
+	var $scope = {};
+	var controller = $controller('CalculatorController', { $scope: $scope });
+	expect($scope.z).toBe(0);
+});
+```
+<img src="http://img1.vued.vanthink.cn/vuedfda9dcd36e7e746d84e03e61f59c4942.png" />
+命令行这个时候会输出测试不通过，这个时候我们需要更新我们的controller代码
+```js
+angular.module('calculatorApp', []).controller('CalculatorController', function CalculatorController($scope) {
+  $scope.z = 0;
+  $scope.sum = function() {
+    $scope.z = $scope.x + $scope.y;
+  };
+});
+
+```
+测试通过的输出如下:
+
+<img src="http://img1.vued.vanthink.cn/vued3ed1f606472c42aed5ff2e7c45dbd643.png" />
+
+### 关于Karma
+
+原文作者写过一篇[文章](http://www.bradoncode.com/blog/2015/02/27/karma-tutorial/)更为详细的介绍Karam,大家可以去深入的了解karma的使用。
+
+
 
 
 -----
