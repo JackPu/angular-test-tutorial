@@ -256,6 +256,14 @@ angular.module('calculatorApp', []).controller('CalculatorController', function 
 
 原文作者写过一篇[文章](http://www.bradoncode.com/blog/2015/02/27/karma-tutorial/)更为详细的介绍Karam,大家可以去深入的了解karma的使用。
 
+karma支持不同的浏览器，我们可以在测试的时候设置这些浏览器：
+
++ [chrome](https://www.npmjs.com/package/karma-chrome-launcher)
++ [safari](https://www.npmjs.com/package/karma-safari-launcher)
++ [firefox](https://www.npmjs.com/package/karma-firefox-launcher)
++ [IE](https://www.npmjs.com/package/karma-ie-launcher)
+
+除此之外，karma还有很多可供使用的插件，你可以在这里搜索到他们:https://www.npmjs.com/package/karma-ie-launcher
 
 
 
